@@ -39,9 +39,7 @@ Purpose:  This project will show you the difference between member functions and
  8) call f.compare() with the correct arguments, based on 2) and 5)
  
  9) correct the cout that uses smaller's member variable with some safe pointer usage.
-    the possible return values of the compare() function should give you a hint.
-    Also: if smaller == nullptr, make the cout statement explain the reasons that `f.compare()` might return nullptr.  
-    hint: There are multiple reasons
+         the possible return values of the compare() function should give you a hint.
  
  10) complete the implementation for the static function in <structName2>
  
@@ -58,49 +56,68 @@ Purpose:  This project will show you the difference between member functions and
 #include <string>
 struct T
 {
-    T(<#type name#> v, const char* <#variable name#>)   //1
-    //2
-    //3
+    T(int v, const char* n);   //1
+    int value;
+    std::string name;
 };
 
-struct <#structName1#>                                //4
+T::T(int v, const char* n) : value(v), name(n) {}
+
+struct Compare                                //4
 {
-    <#type name#> compare(<#type name#> a, <#type name#> b) //5
+    T* compare(T* a, T* b) //5
     {
-        if( a->value < b->value ) return a;
-        if( a->value > b->value ) return b;
+        if(a != nullptr)
+        {
+            if( a->value < b->value ) return a;
+        }
+        if(b != nullptr)
+        {
+            if( a->value > b->value ) return b;
+        }
         return nullptr;
     }
 };
 
 struct U
 {
-    float <#name1#> { 0 }, <#name2#> { 0 };
-    <#returnType#> <#memberFunction#>(<#type name#>* <#updatedValue#>)      //12
+    float waypoint1 { 0 }, waypoint2 { 0 };
+    float reduceDistance(float* newValue)      //12
     {
-        
+        std::cout << "U's waypoint1 value: " << this->waypoint1 << std::endl;
+        if(newValue != nullptr)
+        {
+            this->waypoint1 = *newValue;
+        }
+        std::cout << "U's waypoint1 updated value: " << this->waypoint1 << std::endl;
+        while( std::abs(this->waypoint2 - this->waypoint1) > 0.001f )
+        {           
+            this->waypoint2 += 0.001f ;
+        }
+        std::cout << "U's waypoint2 updated value: " << this->waypoint2 << std::endl;
+        return this->waypoint2 * this->waypoint1;
     }
 };
 
-struct <#structname2#>
+struct UStatic
 {
-    static <#returntype#> <#staticFunctionA#>(U* that, <#type name#>* <#updatedValue#> )        //10
+    static float reduceDistance(U* that, float* newValue )        //10
     {
-        std::cout << "U's <#name1#> value: " << that-><#name1#> << std::endl;
-        that-><#name1#> = <#updatedValue#>;
-        std::cout << "U's <#name1#> updated value: " << that-><#name1#> << std::endl;
-        while( std::abs(that-><#name2#> - that-><#name1#>) > 0.001f )
+        std::cout << "U's waypoint1 value: " << that->waypoint1 << std::endl;
+        if(newValue != nullptr)
         {
-            /*
-             write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-             */
-            that-><#name2#> += ;
+            that->waypoint1 = *newValue;
         }
-        std::cout << "U's <#name2#> updated value: " << that-><#name2#> << std::endl;
-        return that-><#name2#> * that-><#name1#>;
+        std::cout << "U's waypoint1 updated value: " << that->waypoint1 << std::endl;
+        while( std::abs(that->waypoint2 - that->waypoint1) > 0.001f )
+        {           
+            that->waypoint2 += 0.001f ;
+        }
+        std::cout << "U's waypoint2 updated value: " << that->waypoint2 << std::endl;
+        return that->waypoint2 * that->waypoint1;
     }
 };
-        
+   
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
 
@@ -117,17 +134,22 @@ struct <#structname2#>
 
 int main()
 {
-    T <#name1#>( , );                                             //6
-    T <#name2#>( , );                                             //6
+    T number1(1, "object Number 1");                                             //6
+    T number2(2, "object Number 2");     //6
     
-    <#structName1#> f;                                            //7
-    auto* smaller = f.compare( , );                              //8
-    std::cout << "the smaller one is << " << smaller->name << std::endl; //9
-    
-    U <#name3#>;
+    Compare f;                                            //7
+    auto* smaller = f.compare(&number1 ,&number2); //8
+    if(smaller != nullptr)
+    {
+        std::cout << "the smaller one is << " << (*smaller).name << std::endl; //9
+    }
+ 
+    U one;
     float updatedValue = 5.f;
-    std::cout << "[static func] <#name3#>'s multiplied values: " << <#structname2#>::<#staticFunctionA#>( , ) << std::endl;                  //11
+    std::cout << "[static func] one's multiplied values: " << UStatic::reduceDistance( &one, &updatedValue ) << std::endl;                  //11
     
-    U <#name4#>;
-    std::cout << "[member func] <#name4#>'s multiplied values: " << <#name4#>.<#memberFunction#>( &updatedValue ) << std::endl;
+    U two;
+    std::cout << "[member func] two's multiplied values: " << two.reduceDistance(&updatedValue) << std::endl;
+    
+    
 }
