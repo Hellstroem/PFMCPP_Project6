@@ -146,10 +146,8 @@ int main()
  
     U one;
     float updatedValue = 5.f;
-    std::cout << "[static func] one's multiplied values: " << UStatic::reduceDistance( &one, &updatedValue ) << std::endl;                  //11
+    std::cout << "[static func] one's multiplied values: " << UStatic::reduceDistance(&one, &updatedValue) << std::endl;                  //11
     
     U two;
-    std::cout << "[member func] two's multiplied values: " << two.reduceDistance(&updatedValue) << std::endl;
-    
-    
+    std::cout << "[member func] two's multiplied values: " << two.reduceDistance(&updatedValue) << std::endl;   
 }
