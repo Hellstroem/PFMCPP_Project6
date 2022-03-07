@@ -67,12 +67,9 @@ struct Compare                                //4
 {
     T* compare(T* a, T* b) //5
     {
-        if(a != nullptr)
+        if(a != nullptr && b != nullptr)
         {
             if( a->value < b->value ) return a;
-        }
-        if(b != nullptr)
-        {
             if( a->value > b->value ) return b;
         }
         return nullptr;
@@ -103,18 +100,21 @@ struct UStatic
 {
     static float reduceDistance(U* that, float* newValue )        //10
     {
-        std::cout << "U's waypoint1 value: " << that->waypoint1 << std::endl;
-        if(newValue != nullptr)
+        if(that != nullptr)
         {
-            that->waypoint1 = *newValue;
-        }
-        std::cout << "U's waypoint1 updated value: " << that->waypoint1 << std::endl;
-        while( std::abs(that->waypoint2 - that->waypoint1) > 0.001f )
-        {           
-            that->waypoint2 += 0.001f ;
-        }
-        std::cout << "U's waypoint2 updated value: " << that->waypoint2 << std::endl;
-        return that->waypoint2 * that->waypoint1;
+            std::cout << "U's waypoint1 value: " << that->waypoint1 << std::endl;
+            if(newValue != nullptr)
+            {
+                that->waypoint1 = *newValue;
+            }
+            std::cout << "U's waypoint1 updated value: " << that->waypoint1 << std::endl;
+            while( std::abs(that->waypoint2 - that->waypoint1) > 0.001f )
+            {               
+                that->waypoint2 += 0.001f;
+            }
+            std::cout << "U's waypoint2 updated value: " << that->waypoint2 << std::endl;
+        }    
+        return that->waypoint2 * that->waypoint1;  
     }
 };
    
@@ -141,7 +141,11 @@ int main()
     auto* smaller = f.compare(&number1 ,&number2); //8
     if(smaller != nullptr)
     {
-        std::cout << "the smaller one is << " << (*smaller).name << std::endl; //9
+        std::cout << "the smaller one is << " << smaller->name << std::endl; //9
+    }
+    else
+    {
+        std::cout << "One of the objects for comparison in Compare struct does not exist" << '\n';
     }
  
     U one;
