@@ -150,6 +150,7 @@ int main()
  
     U one;
     float updatedValue = 5.f;
+    UStatic::reduceDistance(nullptr, nullptr);
     std::cout << "[static func] one's multiplied values: " << UStatic::reduceDistance(&one, &updatedValue) << std::endl;                  //11
     
     U two;
