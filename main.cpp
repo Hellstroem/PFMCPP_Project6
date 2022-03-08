@@ -29,36 +29,35 @@ Create a branch named Part2
 #include <string>
 struct T
 {
-    T(int v, const char* n);   //1
+    T(int v, const char* n);   
     int value;
     std::string name;
 };
 
 T::T(int v, const char* n) : value(v), name(n) {}
 
-struct Compare                                //4
+struct Compare                                
 {
-    T* compare(T* a, T* b) //5
+    const T* compare(const T& a, const T& b) 
     {
-        if(a != nullptr && b != nullptr)
-        {
-            if( a->value < b->value ) return a;
-            if( a->value > b->value ) return b;
-        }
-        return nullptr;
+        const T* ptr {nullptr};
+        
+        if( a.value < b.value ) return (ptr = &a);
+        if( a.value > b.value ) return (ptr = &b);
+
+        return ptr;
     }
 };
 
 struct U
 {
     float waypoint1 { 0 }, waypoint2 { 0 };
-    float reduceDistance(float* newValue)      //12
+    float reduceDistance(const float& newValue)      
     {
         std::cout << "U's waypoint1 value: " << this->waypoint1 << std::endl;
-        if(newValue != nullptr)
-        {
-            this->waypoint1 = *newValue;
-        }
+
+        this->waypoint1 = newValue;
+
         std::cout << "U's waypoint1 updated value: " << this->waypoint1 << std::endl;
         while( std::abs(this->waypoint2 - this->waypoint1) > 0.001f )
         {           
@@ -71,24 +70,18 @@ struct U
 
 struct UStatic
 {
-    static float reduceDistance(U* that, float* newValue )        //10
+    static float reduceDistance(U& that,const float& newValue )       
     {   
-        if(that != nullptr)
-        {
-            std::cout << "U's waypoint1 value: " << that->waypoint1 << std::endl;
-            if(newValue != nullptr)
-            {
-                that->waypoint1 = *newValue;
-            }
-            std::cout << "U's waypoint1 updated value: " << that->waypoint1 << std::endl;
-            while( std::abs(that->waypoint2 - that->waypoint1) > 0.001f )
-            {               
-                that->waypoint2 += 0.001f;
-            }
-            std::cout << "U's waypoint2 updated value: " << that->waypoint2 << std::endl;
-             return that->waypoint2 * that->waypoint1;  
+        std::cout << "U's waypoint1 value: " << that.waypoint1 << std::endl;
+        that.waypoint1 = newValue;
+
+        std::cout << "U's waypoint1 updated value: " << that.waypoint1 << std::endl;
+        while( std::abs(that.waypoint2 - that.waypoint1) > 0.001f )
+        {               
+            that.waypoint2 += 0.001f;
         }
-        return 0.0f;
+        std::cout << "U's waypoint2 updated value: " << that.waypoint2 << std::endl;
+        return that.waypoint2 * that.waypoint1;  
     }
 };
    
@@ -108,25 +101,24 @@ struct UStatic
 
 int main()
 {
-    T number1(3, "object Number 1");                                             //6
-    T number2(2, "object Number 2");     //6
+    T number1(2, "object Number 1");                                             
+    T number2(2, "object Number 2");     
     
-    Compare f;                                            //7
-    auto* smaller = f.compare(&number1 ,&number2); //8
+    Compare f;                                            
+    auto* smaller = f.compare(number1 ,number2);
     if(smaller != nullptr)
     {
-        std::cout << "the smaller one is << " << smaller->name << std::endl; //9
+        std::cout << "the smaller one is << " << smaller->name << std::endl; 
     }
     else
     {
-        std::cout << "Compared values of objects are equal or pointer arguments of compare function are nullptr's" << '\n';
+        std::cout << "Compared values of objects are equal" << '\n';
     }
  
     U one;
-    float updatedValue = 5.f;
-    UStatic::reduceDistance(nullptr, nullptr);
-    std::cout << "[static func] one's multiplied values: " << UStatic::reduceDistance(&one, &updatedValue) << std::endl;                  //11
+    const float updatedValue = 5.f;
+    std::cout << "[static func] one's multiplied values: " << UStatic::reduceDistance(one, updatedValue) << std::endl;                  
     
     U two;
-    std::cout << "[member func] two's multiplied values: " << two.reduceDistance(&updatedValue) << std::endl;   
+    std::cout << "[member func] two's multiplied values: " << two.reduceDistance(updatedValue) << std::endl; 
 }
