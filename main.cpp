@@ -99,9 +99,7 @@ struct U
 struct UStatic
 {
     static float reduceDistance(U* that, float* newValue )        //10
-    {
-        float result {0};
-        
+    {   
         if(that != nullptr)
         {
             std::cout << "U's waypoint1 value: " << that->waypoint1 << std::endl;
@@ -115,9 +113,9 @@ struct UStatic
                 that->waypoint2 += 0.001f;
             }
             std::cout << "U's waypoint2 updated value: " << that->waypoint2 << std::endl;
-            result = that->waypoint2 * that->waypoint1;  
+             return that->waypoint2 * that->waypoint1;  
         }
-        return result;
+        return 0.0f;
     }
 };
    
@@ -148,7 +146,7 @@ int main()
     }
     else
     {
-        std::cout << "Compared values of objects are equal, pointer arguments of compare function are nullptr's or compared objects are the same " << '\n';
+        std::cout << "Compared values of objects are equal or pointer arguments of compare function are nullptr's" << '\n';
     }
  
     U one;
