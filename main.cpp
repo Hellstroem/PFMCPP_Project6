@@ -38,13 +38,20 @@ T::T(int v, const char* n) : value(v), name(n) {}
 
 struct Compare                                
 {
-    const T* compare(const T& a, const T& b) 
+    T* compare(T& a, T& b) 
     {
-        const T* ptr {nullptr};
+        T* ptr {nullptr};
         
-        if( a.value < b.value ) return (ptr = &a);
-        if( a.value > b.value ) return (ptr = &b);
-
+        if( a.value < b.value ) 
+        {
+            ptr = &a;
+            return ptr;
+        }
+        if( a.value > b.value ) 
+        {
+            ptr = &b;
+            return ptr;
+        }
         return ptr;
     }
 };
@@ -70,7 +77,7 @@ struct U
 
 struct UStatic
 {
-    static float reduceDistance(U& that,const float& newValue )       
+    static float reduceDistance(U& that, const float& newValue )       
     {   
         std::cout << "U's waypoint1 value: " << that.waypoint1 << std::endl;
         that.waypoint1 = newValue;
