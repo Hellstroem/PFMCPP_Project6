@@ -39,20 +39,16 @@ T::T(int v, const char* n) : value(v), name(n) {}
 struct Compare                                
 {
     T* compare(T& a, T& b) 
-    {
-        T* ptr {nullptr};
-        
+    {   
         if( a.value < b.value ) 
         {
-            ptr = &a;
-            return ptr;
+            return &a;
         }
         if( a.value > b.value ) 
         {
-            ptr = &b;
-            return ptr;
+            return &b;
         }
-        return ptr;
+        return nullptr;
     }
 };
 
